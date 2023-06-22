@@ -41,11 +41,12 @@ const bodyParser = __importStar(require("body-parser"));
 const userModel = __importStar(require("../models/user"));
 const express_validator_1 = require("express-validator");
 const jwt_1 = require("../jwt");
+const jwt_2 = require("../jwt");
 const userRouter = express_1.default.Router();
 exports.userRouter = userRouter;
 var jsonParser = bodyParser.json();
 userRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(0, jwt_1.verifyToken)(req, res)) {
+    if (!(0, jwt_2.verifyToken)(req, res)) {
         return res.status(403).json({ "message": '<b>Trebue sa fi logat pentru a accesa aceasta zona!<b>' });
     }
     userModel.findAll((err, users) => {
@@ -56,7 +57,7 @@ userRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 }));
 userRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(0, jwt_1.verifyToken)(req, res)) {
+    if (!(0, jwt_2.verifyToken)(req, res)) {
         return res.status(403).json({ "message": '<b>Trebue sa fi logat pentru a accesa aceasta zona!<b>' });
     }
     const userId = Number(req.params.id);
@@ -89,7 +90,7 @@ userRouter.post("/", jsonParser, [
 }));
 // Edit user
 userRouter.put("/:id", jsonParser, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(0, jwt_1.verifyToken)(req, res)) {
+    if (!(0, jwt_2.verifyToken)(req, res)) {
         return res.status(403).json({ "message": '<b>Trebue sa fi logat pentru a accesa aceasta zona!<b>' });
     }
     const user = req.body;
@@ -106,7 +107,7 @@ userRouter.put("/:id", jsonParser, (req, res) => __awaiter(void 0, void 0, void 
 }));
 // Delete user
 userRouter.delete("/:id", jsonParser, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(0, jwt_1.verifyToken)(req, res)) {
+    if (!(0, jwt_2.verifyToken)(req, res)) {
         return res.status(403).json({ "message": '<b>Trebue sa fi logat pentru a accesa aceasta zona!<b>' });
     }
     const userId = Number(req.params.id);
@@ -143,5 +144,11 @@ userRouter.post("/veifyLogin", jsonParser, (req, res) => __awaiter(void 0, void 
             roles: 'ADMIN',
             accessToken: token
         });
+    });
+}));
+userRouter.post("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    return res.status(200).json({
+        accessToken: null,
+        message: "User has been logged out."
     });
 }));

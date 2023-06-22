@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express";
 import * as bodyParser from "body-parser";
-
+import fileUpload, { UploadedFile } from 'express-fileupload';
+import path from "path";
 import * as postModel from "../models/post";
 import {Post} from "../types/Post";
 const postRouter = express.Router();
@@ -37,8 +38,20 @@ postRouter.get("/:id", async (req: Request, res: Response) => {
 });
 
 postRouter.post("/",jsonParser, async (req: Request, res: Response) => {
+  
   console.log(req.body);
+  console.log('files',req.files);
   const newPost: Post = req.body;
+
+  // let fileToUpload:any;
+  // let uploadPath;
+  // fileToUpload = req.files!.poza as UploadedFile; //Object is possibly 'null' or 'undefined'.
+  // const newFileName = `${Date.now()}-_${fileToUpload.name}`;
+  // uploadPath = path.join(__dirname, '..', '/uploads/', newFileName);
+  
+  // console.log(uploadPath);
+  // fileToUpload.mv(uploadPath);
+  // newPost['poza'] = newFileName;
   postModel.addPost(newPost, (err: Error, postId: number) => {
     if (err) {
       return res.status(500).json({"message": err.message});
@@ -46,6 +59,9 @@ postRouter.post("/",jsonParser, async (req: Request, res: Response) => {
     res.status(200).json({"message": 'Datele au fost introduse cu succes'});
   });
 });
+
+
+
 
 
 

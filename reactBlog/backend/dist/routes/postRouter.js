@@ -69,7 +69,16 @@ postRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function*
 }));
 postRouter.post("/", jsonParser, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
+    console.log('files', req.files);
     const newPost = req.body;
+    // let fileToUpload:any;
+    // let uploadPath;
+    // fileToUpload = req.files!.poza as UploadedFile; //Object is possibly 'null' or 'undefined'.
+    // const newFileName = `${Date.now()}-_${fileToUpload.name}`;
+    // uploadPath = path.join(__dirname, '..', '/uploads/', newFileName);
+    // console.log(uploadPath);
+    // fileToUpload.mv(uploadPath);
+    // newPost['poza'] = newFileName;
     postModel.addPost(newPost, (err, postId) => {
         if (err) {
             return res.status(500).json({ "message": err.message });

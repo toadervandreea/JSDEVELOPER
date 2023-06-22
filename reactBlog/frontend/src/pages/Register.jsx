@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../Login.css";
 
@@ -8,20 +8,12 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FormGroup, Button } from "react-bootstrap";
 import axios from "axios";
-
+import { AuthContext } from "../context/authContext";
 import configData from "../config.json";
 
 export default function Register() {
   let navigate = useNavigate();
-  const [authenticated, setauthenticated] = useState(null);
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("authenticated");
-    
-    if (loggedInUser) {
-      setauthenticated(loggedInUser);
-    }
-  }, []);
-
+  const { authenticated } = useContext(AuthContext);
   const validationSchema = Yup.object().shape({
     nume: Yup.string().required("Camp obligatoriu!"),
     prenume: Yup.string().required("Camp obligatoriu!"),
@@ -73,10 +65,11 @@ export default function Register() {
       });
     // setFormData(values => ({}))
   };
-  if (!authenticated) {
+  console.log('authenticated', authenticated);
+  if (authenticated) {
     // Redirect
-    // alert(1234);
-    // return <Navigate replace to="/all-posts" />;
+    alert(1234);
+    return <Navigate replace to="/posts" />;
     
   } else {
     return (
@@ -89,7 +82,7 @@ export default function Register() {
           </div>
           <div className="row justify-content-center">
             <div className="col-md-6 col-lg-5">
-              <div className="login-wrap p-4 p-md-5">
+              <div className="login-wrap px-4 px-md-5">
                 <div className="icon d-flex align-items-center justify-content-center">
                   <FontAwesomeIcon icon="fa-solid fa-user" />
                 </div>
@@ -181,7 +174,7 @@ export default function Register() {
                       />
                     </FormGroup>
                     <FormGroup>
-                      <div class="w-50 text-md-right float-end">
+                      <div className="w-50 text-md-right float-end">
                         <Link to="/mylogin" className="nav-link login">
                           Aveti deja cont? Login
                         </Link>

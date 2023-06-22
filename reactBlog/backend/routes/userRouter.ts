@@ -4,8 +4,8 @@ import * as bodyParser from "body-parser";
 import * as userModel from "../models/user";
 import {User} from "../types/User";
 import { check,validationResult }  from 'express-validator';
-import { generateToken, verifyToken } from '../jwt';
-
+import { generateToken } from '../jwt';
+import { verifyToken } from '../jwt';
 
 const userRouter = express.Router();
 var jsonParser = bodyParser.json();
@@ -123,5 +123,11 @@ userRouter.post("/veifyLogin",jsonParser, async (req: Request, res: Response) =>
     });
   });
 });
+userRouter.post("/logout", async (req: Request, res: Response) => {
+  return  res.status(200).json({
+    accessToken: null,
+    message: "User has been logged out."
+  })
+})
 
 export {userRouter};

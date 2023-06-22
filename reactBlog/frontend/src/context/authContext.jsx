@@ -10,17 +10,33 @@ export const AuthContexProvider = ({children}) => {
     const login = async (inputs) => {
         const res = await axios.post(configData.SERVER_URL+'veifyLogin', inputs);
         setCurrentUser(res.data);
-    };
-
-    const logout = async (inputs) => {
-        await axios.post(configData.SERVER_URL+'logout');
-        setCurrentUser(null);
-    };
-
-    useEffect(() => {
         localStorage.setItem("user", JSON.stringify(currentUser));
         setauthenticated(true);
         localStorage.setItem("authenticated", true);
+    };
+
+    const logout = async (inputs) => {
+        alert('doriti sa va delogati?');
+        const res = await axios.post(configData.SERVER_URL+'logout');
+        setauthenticated(false);
+        localStorage.setItem("authenticated", false);
+        setCurrentUser(null);
+        console.log(res.data);
+    };
+
+    useEffect(() => {
+       // alert('context');
+        if(currentUser != null) {
+            localStorage.setItem("user", JSON.stringify(currentUser));
+            setauthenticated(true);
+            localStorage.setItem("authenticated", true);
+        }
+        else{
+            localStorage.setItem("user", null);
+            setauthenticated(false);
+            localStorage.setItem("authenticated", false);
+        }
+       
     }, [currentUser]);
 
     return (
